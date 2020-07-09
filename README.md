@@ -37,11 +37,11 @@ vue2 + vuex + vue-router + vue-cli4 + axios + element-ui + echarts + sass
 
 ## 部分截图
 
-![img]()
-![img]()
-![img]()
-![img]()
-![img]()
+![img](https://github.com/Mr-Mei/carManagement/blob/master/public/project-image/login.png)
+![img](https://github.com/Mr-Mei/carManagement/blob/master/public/project-image/xinxi.png)
+![img](https://github.com/Mr-Mei/carManagement/blob/master/public/project-image/pinpai.png)
+![img](https://github.com/Mr-Mei/carManagement/blob/master/public/project-image/kucun.png)
+![img](https://github.com/Mr-Mei/carManagement/blob/master/public/project-image/yibiaopan.png)
 
 # Build Setup
 
