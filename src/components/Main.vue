@@ -1,0 +1,122 @@
+<template>
+  <div :class="getCollapse?'collapsed-main':'main'">
+    <el-col :span="24">
+      <el-breadcrumb class="breadcrumb-inner">
+        <el-breadcrumb-item
+          v-if="hasParent"
+          :class="hasChild?'normal-font':'bold-font'"
+        >{{ parentName }}</el-breadcrumb-item>
+        <el-breadcrumb-item v-if="hasChild" class="bold-font">{{ childName }}</el-breadcrumb-item>
+      </el-breadcrumb>
+    </el-col>
+    <el-col :span="24" class="content-wrapper">
+      <transition name="fade" mode="out-in">
+        <keep-alive>
+          <router-view v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
+      </transition>
+    </el-col>
+  </div>
+</template>
+<script>
+import store from '@/store/index'
+export default {
+  name: 'Main',
+  props: ['navMenus'],
+  store,
+  computed: {
+    getCollapse () {
+      return this.$store.state.collapsed
+    }
+  },
+  data () {
+    return {
+      parentName: '',
+      childName: '',
+      hasParent: true,
+      hasChild: true
+    }
+  },
+  mounted () {
+    this.getBreadcrumbName(this.$route.path)
+  },
+  methods: {
+    getBreadcrumbName (path) {
+      const navMenus = this.navMenus
+      for (const index in navMenus) {
+        if ('/' + navMenus[index].entity.path === path) {
+          this.hasParent = true
+          this.hasChild = false
+          this.parentName = navMenus[index].entity.name
+          break
+        } else if (Object.prototype.hasOwnProperty.call(navMenus[index], 'childs')) {
+          this.hasParent = true
+          this.hasChild = true
+          const childs = navMenus[index].childs
+          for (const child in childs) {
+            if ('/' + childs[child].entity.path === path) {
+              this.childName = childs[child].entity.name
+              this.parentName = navMenus[index].entity.name
+              break
+            }
+          }
+        }
+      }
+    }
+  },
+  watch: { // 监听路由变化
+    $route (to) {
+      this.getBreadcrumbName(to.path) // to.path ( 表示的是要跳转到的路由的地址 eg:  /home )
+    }
+  }
+}
+</script>
+<style lang="scss">
+.main {
+  width: calc(100% - 260px);
+  padding: 15px;
+}
+.collapsed-main {
+  width: calc(100% - 90px);
+  padding: 15px;
+}
+.breadcrumb-inner {
+  float: left;
+}
+.normal-font {
+  span {
+    font-size: 16px;
+  }
+}
+.bold-font {
+  span {
+    font-weight: bold !important;
+    font-size: 16px;
+  }
+}
+.content-wrapper {
+  background-color: #fff;
+  box-sizing: border-box;
+}
+/* 子组件共用css 定义在父组件中 若定义在其中一个子组件中可能导致在其他组件重新加载无效  */
+.add-button {
+  float: right;
+  padding-right: 10px;
+}
+.toolbar {
+  background-color: #f4f4f4;
+  padding: 10px;
+  margin: 10px 0px;
+}
+.el-form-item {
+  margin-bottom: 10px;
+}
+.el-table__fixed-right-patch {
+  background-color: #eef1f6;
+}
+.row-padding-bottom {
+  padding-bottom: 10px;
+}
+
+</style>
