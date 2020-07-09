@@ -1,6 +1,6 @@
 # 项目效果演示
 
-[传送门](https://github.com/Mr-Mei/carManagement)
+[传送门](mr-mei.github.io/carmanagement/#/)
 
 # 说明
 
